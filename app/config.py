@@ -3,8 +3,15 @@ from dotenv import load_dotenv  # getting .env variables
 from datetime import timedelta
 
 class Config:
+    DB_USER = 'root'
+    DB_PASSWORD = 'root'
+    DB_HOST = 'localhost'
+    DB_PORT = 3306
+    DB_NAME = 'blog_db'
     SECRET_KEY = "myFlaskApp4Fun"  # needed for login with wtforms
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///admin.db' 
+    SQLALCHEMY_DATABASE_URI = (
+        f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     TEMPLATES_AUTO_RELOAD = True
     ABSOLUTE_PATH = os.path.dirname(__file__)

@@ -7,7 +7,7 @@ class Blog_Posts(db.Model):
     date_submitted = db.Column(db.DateTime, default=datetime.utcnow)
     date_to_post = db.Column(db.DateTime, default=datetime.utcnow)
     title = db.Column(db.String(200), nullable=False)
-    intro = db.Column(db.String(200), nullable=False)
+    intro = db.Column(db.Text(), nullable=False)
     body = db.Column(db.Text, nullable=False)
     picture_v = db.Column(db.String(200))
     picture_v_source = db.Column(db.String(500))

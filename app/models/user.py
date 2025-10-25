@@ -10,10 +10,9 @@ class Blog_User(UserMixin, db.Model):
     email = db.Column(db.String(200), nullable=False, unique=True)
     password = db.Column(db.String(200), nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
-    about = db.Column(db.String(385), default="")
+    about = db.Column(db.Text, default="")
     # picture's name is saved here, but file saved in static folder
-    picture = db.Column(
-        db.String(), default="Picture_default.jpg")
+    picture = db.Column(db.String(200), default="Picture_default.jpg")
     # type can be: admin, super_admin, author, or user
     type = db.Column(db.String(100), nullable=False, default="user")
     blocked = db.Column(db.String(5), default="FALSE")

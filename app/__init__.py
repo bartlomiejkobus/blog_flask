@@ -1,5 +1,6 @@
 from flask import Flask
-import app.extensions as extensions
+from pymysql import connect
+from app.extensions import db, ckeditor, login_manager
 from app.config import Config
 import os
 
@@ -7,10 +8,12 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
+    create_database_if_not_exists(config_class)
+
     # db = SQLAlchemy(app)
-    extensions.db.init_app(app)
-    extensions.ckeditor.init_app(app)
-    extensions.login_manager.init_app(app)
+    db.init_app(app)
+    ckeditor.init_app(app)
+    login_manager.init_app(app)
 
     from app.account.routes import account
     from app.dashboard.routes import dashboard
@@ -40,3 +43,19 @@ def create_app(config_class=Config):
         pass
 
     return app
+
+
+def create_database_if_not_exists(config):
+    conn = connect(
+        host=config.DB_HOST,
+        user=config.DB_USER,
+        password=config.DB_PASSWORD,
+        port=config.DB_PORT,
+        autocommit=True
+    )
+    cursor = conn.cursor()
+    cursor.execute(
+        f"CREATE DATABASE IF NOT EXISTS {config.DB_NAME} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+    )
+    cursor.close()
+    conn.close()
