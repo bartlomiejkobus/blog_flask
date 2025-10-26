@@ -13,7 +13,7 @@ from app.dummie_data import authors, posts, themes, comments
 from app.account.helpers import hash_pw
 from app.models.helpers import pic_src_user, pic_src_post, pic_src_theme, update_stats_comments_total, update_stats_users_total, update_likes, update_bookmarks, delete_comment, delete_reply, update_approved_post_stats, update_stats_users_active
 from datetime import datetime
-
+import os
 
 # Creating a super_admin, a default author account, and a default user account
 # The super_admin is important as this will enable the management of all other users.
@@ -23,16 +23,16 @@ from datetime import datetime
 # you can re-define the log-in credentials for these users by changing the variables bellow.
 ADMIN_NAME = "Super Admin"
 ADMIN_EMAIL = "super@admin"
-ADMIN_PW = "admin123"
+ADMIN_PW = os.environ['ADMIN_PW']
 ADMIN_PICTURE = "Picture_default.jpg"
 DEFAULT_AUTHOR_NAME = "The Travel Blog Team"
 DEFAULT_AUTHOR_EMAIL = "travel@team"
-DEFAULT_AUTHOR_PW = "author123"
+DEFAULT_AUTHOR_PW = os.environ['DEFAULT_AUTHOR_PW']
 DEFAULT_AUTHOR_ABOUT = authors.authors_about
 DEFAULT_AUTHOR_PICTURE = "Picture_default_author.jpg"
 DEFAULT_USER_NAME = "[Deleted]"
 DEFAULT_USER_EMAIL = "deleted@users"
-DEFAULT_USER_PW = "user123"
+DEFAULT_USER_PW = os.environ['DEFAULT_USER_PW']
 DEFAULT_USER_ABOUT = "This user's account has been deleted"
 DEFAULT_USER_PICTURE = "Picture_default.jpg"
 
@@ -89,7 +89,7 @@ def create_themes():
 
 # Creating dummie user accounts: to test and use the app as example
 # These users can be deleted without impacting the blog's usage
-USER_PW = "user123"
+USER_PW = os.environ['USER_PW']
 USER_ABOUT = authors.authors_about
 
 def create_dummie_accts():

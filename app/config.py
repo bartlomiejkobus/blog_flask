@@ -8,7 +8,7 @@ class Config:
     DB_HOST = os.environ['RDS_HOSTNAME']
     DB_PORT = int(os.environ['RDS_PORT'])
     DB_NAME = os.environ['RDS_DB_NAME']
-    SECRET_KEY = "myFlaskApp4Fun"  # needed for login with wtforms
+    SECRET_KEY = os.environ['SECRET_KEY']  # needed for login with wtforms
     SQLALCHEMY_DATABASE_URI = (
         f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
     )
