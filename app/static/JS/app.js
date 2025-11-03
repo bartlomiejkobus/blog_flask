@@ -56,7 +56,7 @@ function likeOrBookmark(postId, action) {
         .then((res) => res.json())
         .then((data) => {
             if (action == "like" ){
-                likesCount.innerHTML = data["likes"];
+                likesCount.textContent = data["likes"];
                 has_liked = data["user_liked"];
                 has_liked == "true" ? thumbsUp.classList.add("All-svg-clicked") : thumbsUp.classList.remove("All-svg-clicked");
             } else {
@@ -120,11 +120,10 @@ function commentOrReply(event, postId, isComment) {
     }).then((res) => res.json())
         .then((data) => {
             if (data['message'] == "Comment empty") {
-                msgSentP.textContent == "You cannot send an empty comment or reply. Request failed."
+                msgSentP.textContent = "You cannot send an empty comment or reply. Request failed."
             } else {
                 msgSentP.classList.remove("All-display-none")
                 isComment == "true" ? alert("Comment sent! Refresh the page to see the changes") : alert("Reply sent! Refresh the page to see the changes")
-
             }
         })
 }
