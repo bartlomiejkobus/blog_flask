@@ -38,7 +38,7 @@ def create_app(config_class=Config):
         response.headers['X-Content-Type-Options'] = 'nosniff'
         response.headers['X-Frame-Options'] = 'SAMEORIGIN'
         response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
-        response.headers['Content-Security-Policy'] = "default-src 'self';"
+        # response.headers['Content-Security-Policy'] = "default-src 'self';"
         response.headers['Server'] = 'Hidden'
         return response
 
@@ -73,8 +73,7 @@ def create_database_if_not_exists(config):
     cursor = conn.cursor()
     
     cursor.execute(
-        "CREATE DATABASE IF NOT EXISTS %s CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;",
-        (config.DB_NAME,)
+        f"CREATE DATABASE IF NOT EXISTS `{config.DB_NAME}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
     )
     cursor.close()
     conn.close()
