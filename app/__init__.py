@@ -10,7 +10,6 @@ def create_app(config_class=Config):
 
     create_database_if_not_exists(config_class)
 
-    # db = SQLAlchemy(app)
     db.init_app(app)
     ckeditor.init_app(app)
     login_manager.init_app(app)
@@ -29,6 +28,20 @@ def create_app(config_class=Config):
     app.register_blueprint(website)
     app.register_blueprint(error_handler)
 
+    app.config.update(
+        SESSION_COOKIE_SECURE=True,
+        SESSION_COOKIE_SAMESITE='Lax'
+    )
+
+    @app.after_request
+    def apply_security_headers(response):
+        response.headers['X-Content-Type-Options'] = 'nosniff'
+        response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+        response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+        response.headers['Content-Security-Policy'] = "default-src 'self';"
+        response.headers['Server'] = 'Hidden'
+        return response
+
     @app.route('/test/')
     def test_page():
         return '<h1> Testing the App </h1>'
@@ -46,6 +59,10 @@ def create_app(config_class=Config):
 
 
 def create_database_if_not_exists(config):
+    import re
+    if not re.match(r'^[a-zA-Z0-9_]+$', config.DB_NAME):
+        raise ValueError(f"Invalid database name: {config.DB_NAME}")
+    
     conn = connect(
         host=config.DB_HOST,
         user=config.DB_USER,
@@ -54,8 +71,10 @@ def create_database_if_not_exists(config):
         autocommit=True
     )
     cursor = conn.cursor()
+    
     cursor.execute(
-        f"CREATE DATABASE IF NOT EXISTS {config.DB_NAME} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+        "CREATE DATABASE IF NOT EXISTS %s CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;",
+        (config.DB_NAME,)
     )
     cursor.close()
     conn.close()
